@@ -1,0 +1,28 @@
+meta {
+  name: Update User
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{url}}/api/users/4
+  body: formUrlEncoded
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:form-urlencoded {
+  name: Sanilllldfghngfd
+  email: sanilas@gmail.com
+}
+
+settings {
+  encodeUrl: true
+}
