@@ -11,9 +11,12 @@
 |
 */
 
+use App\Enums\Roles;
+use App\Models\User;
+
 pest()->extend(Tests\TestCase::class)
-  ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
-    ->in('Feature');
+      ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+      ->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +44,28 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+/**
+ * Creates a new user with the admin role and logs them in.
+ *
+ * @return User
+ */
+function asAdmin(): User
 {
-    // ..
+    $user = User::factory()->create();
+    $user->assignRole(Roles::ADMIN);
+
+    return $user;
+}
+
+/**
+ * Creates a new user with the author role and logs them in.
+ *
+ * @return User
+ */
+function asAuthor(): User
+{
+    $user = User::factory()->create();
+    $user->assignRole(Roles::AUTHOR);
+
+    return $user;
 }

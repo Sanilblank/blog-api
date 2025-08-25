@@ -1,0 +1,28 @@
+meta {
+  name: List Users
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/api/users?search=s&roles=author
+  body: none
+  auth: bearer
+}
+
+params:query {
+  search: s
+  roles: author
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

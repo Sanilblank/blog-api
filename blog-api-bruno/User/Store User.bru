@@ -1,0 +1,31 @@
+meta {
+  name: Store User
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{url}}/api/users
+  body: formUrlEncoded
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:form-urlencoded {
+  name: Sanil
+  email: san@gmail.com
+  password: password
+  password_confirmation: password
+  role: author
+}
+
+settings {
+  encodeUrl: true
+}
