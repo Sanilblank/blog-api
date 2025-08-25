@@ -1,0 +1,35 @@
+meta {
+  name: Register
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{url}}/api/register
+  body: formUrlEncoded
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+body:form-urlencoded {
+  name: test
+  email: test@gmail.com
+  password: password
+  password_confirmation: password
+}
+
+tests {
+  const responseJson = res.getBody();
+  
+  if (responseJson?.data?.token) {
+    var bodyToken = responseJson.data.token;
+    bru.setEnvVar("token", bodyToken)
+  }
+}
+
+settings {
+  encodeUrl: true
+}
