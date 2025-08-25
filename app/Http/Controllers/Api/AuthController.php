@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\Roles;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\LoginResource;
+use App\Services\User\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +20,15 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends BaseApiController
 {
     /**
+     * AuthController constructor.
+     *
+     * @param  UserService  $userService
+     */
+    public function __construct(protected UserService $userService)
+    {
+    }
+
+    /**
      * Handle an authentication attempt.
      *
      * @param  Request  $request
@@ -24,26 +37,27 @@ class AuthController extends BaseApiController
      *
      * @throws ValidationException
      */
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
-        $credentials = $request->validate([
-            'email'    => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        try {
+            if (!Auth::attempt($request->validated())) {
+                throw ValidationException::withMessages([
+                    'email' => [__('Invalid credentials')],
+                ]);
+            }
 
-        if (!Auth::attempt($credentials)) {
-            throw ValidationException::withMessages([
-                'email' => [__('Invalid credentials')],
+            $user = $request->user();
+            $token = $user->createToken('api-token')->plainTextToken;
+
+            return $this->success(__('Logged in successfully!'), [
+                'user'  => new LoginResource($user),
+                'token' => $token,
             ]);
+        } catch (ValidationException $exception) {
+            throw $exception;
+        } catch (\Throwable $e) {
+            return $this->failure($e->getMessage());
         }
-
-        $user = $request->user();
-        $token = $user->createToken('api-token')->plainTextToken;
-
-        return $this->success(__('Logged in successfully!'), [
-            'user'  => new LoginResource($user),
-            'token' => $token,
-        ]);
     }
 
     /**
@@ -55,8 +69,42 @@ class AuthController extends BaseApiController
      */
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        try {
+            $request->user()->currentAccessToken()->delete();
 
-        return $this->success(__('Logged out successfully!'));
+            return $this->success(__('Logged out successfully!'));
+        } catch (\Throwable $e) {
+            return $this->failure($e->getMessage());
+        }
+    }
+
+    /**
+     * Register a new author.
+     *
+     * @param  RegisterRequest  $request
+     *
+     * @return JsonResponse
+     *
+     * @throws \Throwable
+     */
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        try {
+            \DB::beginTransaction();
+            $data = $request->validated();
+            $data['role'] = Roles::AUTHOR->value;
+            $user = $this->userService->store($data);
+            $token = $user->createToken('api-token')->plainTextToken;
+            \DB::commit();
+
+            return $this->success(__('Author registered successfully!'), [
+                'user'  => new LoginResource($user),
+                'token' => $token,
+            ]);
+        } catch (\Throwable $e) {
+            \DB::rollBack();
+
+            return $this->failure($e->getMessage());
+        }
     }
 }
