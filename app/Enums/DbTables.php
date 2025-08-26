@@ -10,4 +10,6 @@ enum DbTables: string
     case USERS = 'users';
 
     case CATEGORIES = 'categories';
+
+    case TAGS = 'tags';
 }

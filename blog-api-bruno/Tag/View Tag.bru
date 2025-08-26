@@ -1,0 +1,23 @@
+meta {
+  name: View Tag
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{url}}/api/tags/3
+  body: none
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+}
