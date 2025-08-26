@@ -1,20 +1,13 @@
 meta {
-  name: List Users
+  name: View Category
   type: http
-  seq: 1
+  seq: 5
 }
 
 get {
-  url: {{url}}/api/users?search=s&roles=author
+  url: {{url}}/api/categories/3
   body: none
   auth: bearer
-}
-
-params:query {
-  search: s
-  roles: author
-  ~page: 1
-  ~per_page: 1
 }
 
 headers {

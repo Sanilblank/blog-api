@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\DbTables;
 use App\Filters\UserFilter;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,6 +22,11 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasRoles, HasApiTokens;
+
+    /**
+     * @var string
+     */
+    protected $table = DbTables::USERS->value;
 
     /**
      * @var string
