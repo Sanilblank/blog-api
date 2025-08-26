@@ -13,7 +13,7 @@ use App\Models\Category;
 use App\Services\Category\CategoryService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class CategoryController
@@ -68,11 +68,11 @@ class CategoryController extends BaseApiController
     public function store(CategoryCreateRequest $request): JsonResponse
     {
         try {
+            DB::beginTransaction();
             $this->categoryService->create($request->validated());
+            DB::commit();
 
             return $this->success(message: __('Category created successfully'));
-        } catch (AuthorizationException $e) {
-            return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {
             \DB::rollBack();
             logger()->error($e);
@@ -95,7 +95,6 @@ class CategoryController extends BaseApiController
         try {
             return $this->success(message: __('Category details.'), data: new CategoryResource($category));
         } catch (\Throwable $e) {
-            \DB::rollBack();
             logger()->error($e);
 
             return $this->failure(__($e->getMessage()));
@@ -115,13 +114,13 @@ class CategoryController extends BaseApiController
     public function update(CategoryUpdateRequest $request, Category $category): JsonResponse
     {
         try {
+            DB::beginTransaction();
             $this->categoryService->update($category, $request->validated());
+            DB::commit();
 
             return $this->success(message: __('Category updated successfully'));
-        } catch (AuthorizationException $e) {
-            return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {
-            \DB::rollBack();
+            DB::rollBack();
             logger()->error($e);
 
             return $this->failure(__($e->getMessage()));
@@ -140,17 +139,18 @@ class CategoryController extends BaseApiController
     public function destroy(Category $category): JsonResponse
     {
         try {
+            DB::beginTransaction();
+
             if (count($category->posts)) {
                 return $this->failure(message: __('Category cannot be deleted as it has posts.'), code: 400);
             }
 
             $this->categoryService->delete($category);
+            DB::commit();
 
             return $this->success(message: __('Category deleted successfully'));
-        } catch (AuthorizationException $e) {
-            return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {
-            \DB::rollBack();
+            DB::rollBack();
             logger()->error($e);
 
             return $this->failure(__($e->getMessage()));

@@ -22,4 +22,11 @@ enum PermissionNames: string
     case CREATE_POST = 'create_post';
     case DELETE_POST = 'delete_post';
     case UPDATE_POST = 'update_post';
+
+    /**
+     * Comment Permissions
+     */
+    case CREATE_COMMENT = 'create_comment';
+    case DELETE_COMMENT = 'delete_comment';
+    case UPDATE_COMMENT = 'update_comment';
 }

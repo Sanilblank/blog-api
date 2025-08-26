@@ -12,16 +12,21 @@ use Illuminate\Support\Str;
 class TagFactory extends Factory
 {
     /**
+     * @var string
+     */
+    protected $model = Tag::class;
+
+    /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
     public function definition(): array
     {
-        $word = fake()->unique()->word();
+        $word = fake()->unique()->words(3, true);
 
         return [
-            'name' => fake()->word(),
+            'name' => $word,
             'slug' => Str::slug($word),
         ];
     }

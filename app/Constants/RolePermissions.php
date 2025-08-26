@@ -28,6 +28,13 @@ class RolePermissions
         PermissionNames::CREATE_POST,
         PermissionNames::UPDATE_POST,
         PermissionNames::DELETE_POST,
+
+        /**
+         * Comment Permissions
+         */
+        PermissionNames::CREATE_COMMENT,
+        PermissionNames::UPDATE_COMMENT,
+        PermissionNames::DELETE_COMMENT,
     ];
 
     /**
@@ -47,5 +54,12 @@ class RolePermissions
         PermissionNames::CREATE_POST,
         PermissionNames::UPDATE_POST,
         PermissionNames::DELETE_POST,
+
+        /**
+         * Comment Permissions
+         */
+        PermissionNames::CREATE_COMMENT,
+        PermissionNames::UPDATE_COMMENT,
+        PermissionNames::DELETE_COMMENT,
     ];
 }

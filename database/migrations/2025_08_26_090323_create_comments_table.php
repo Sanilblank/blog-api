@@ -5,20 +5,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create(DbTables::TAGGABLES->value, function (Blueprint $table) {
+        Schema::create(DbTables::COMMENTS->value, function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tag_id')->constrained(DbTables::TAGS->value)->cascadeOnDelete();
-            $table->morphs('taggable');
+            $table->foreignId('user_id')->constrained(DbTables::USERS->value)->cascadeOnDelete();
+            $table->morphs('commentable');
+            $table->text('body');
             $table->timestamps();
-
-            $table->unique(['tag_id', 'taggable_type', 'taggable_id'], 'taggables_unique');
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists(DbTables::TAGGABLES->value);
+        Schema::dropIfExists(DbTables::COMMENTS->value);
     }
 };

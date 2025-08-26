@@ -32,11 +32,9 @@ class AuthController extends BaseApiController
     /**
      * Handle an authentication attempt.
      *
-     * @param  Request  $request
+     * @param  LoginRequest  $request
      *
      * @return JsonResponse
-     *
-     * @throws ValidationException
      */
     public function login(LoginRequest $request): JsonResponse
     {

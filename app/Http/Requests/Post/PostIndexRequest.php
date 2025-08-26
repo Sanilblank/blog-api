@@ -54,7 +54,8 @@ class PostIndexRequest extends FormRequest
             'search'   => ['nullable', 'string'],
             'category' => ['nullable', 'integer', 'exists:categories,id'],
             'tags'     => ['nullable', 'array'],
-            'tags.*'   => ['nullable', 'string', 'exists:tags,id']
+            'tags.*'   => ['nullable', 'string', 'exists:tags,id'],
+            'author'   => ['nullable', 'integer', 'exists:users,id'],
         ];
     }
 

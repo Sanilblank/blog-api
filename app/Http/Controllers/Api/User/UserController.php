@@ -14,6 +14,7 @@ use App\Services\User\UserService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class UserController
@@ -33,11 +34,10 @@ class UserController extends BaseApiController
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param  UserIndexRequest  $request
      *
      * @return JsonResponse
      *
-     * @throws AuthorizationException
      */
     public function index(UserIndexRequest $request): JsonResponse
     {
@@ -77,15 +77,15 @@ class UserController extends BaseApiController
         try {
             $this->authorize('create', User::class);
 
-            \DB::beginTransaction();
+            DB::beginTransaction();
             $this->userService->store($request->validated());
-            \DB::commit();
+            DB::commit();
 
             return $this->success(message: 'User created successfully.');
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {
-            \DB::rollBack();
+            DB::rollBack();
             logger()->error($e);
 
             return $this->failure(__($e->getMessage()));
@@ -107,14 +107,15 @@ class UserController extends BaseApiController
         try {
             $this->authorize('update', [User::class, $user]);
 
-            \DB::beginTransaction();
+            DB::beginTransaction();
             $this->userService->update($user, $request->validated());
-            \DB::commit();
+            DB::commit();
 
             return $this->success(message: 'User updated successfully.');
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {
+            DB::rollBack();
             logger()->error($e);
 
             return $this->failure(__($e->getMessage()));
@@ -160,15 +161,15 @@ class UserController extends BaseApiController
         try {
             $this->authorize('delete', [User::class, $user]);
 
-            \DB::beginTransaction();
+            DB::beginTransaction();
             $this->userService->destroy($user);
-            \DB::commit();
+            DB::commit();
 
             return $this->success(message: 'User deleted successfully.');
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {
-            \DB::rollBack();
+            DB::rollBack();
             logger()->error($e);
 
             return $this->failure(__($e->getMessage()));
