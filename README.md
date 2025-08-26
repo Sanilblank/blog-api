@@ -119,10 +119,14 @@ Access the api at http://127.0.0.1:8000/
 ```
 Access the api at http://localhost:80/
 
+---
+
 ### 👤 Authentication
 * Uses Laravel Sanctum for token-based authentication.
 * Register/Login to receive an API token.
 * Use the token for authenticated requests in headers: Authorization: Bearer <token>.
+
+---
 
 ### 👮 Roles & Permissions
 - **Admin**
@@ -135,11 +139,14 @@ Access the api at http://localhost:80/
     - Can update or delete **only their own account**.
 - Role-based access control (RBAC) is implemented using **Spatie Laravel Permission**.
 
+---
 
 ### 📝 API Documentation
 
 - The API documentation is **auto-generated** using **Scramble** and can be found at `/docs/api`.
 - The **Bruno API collection** is available in `/App/blog-api-folder` for reference and implementation.
+
+---
 
 ### 🧪 Running Tests
 
@@ -156,3 +163,4 @@ php artisan test
 ```bash
   ./vendor/bin/sail artisan test
 ```
+---
