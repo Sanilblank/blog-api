@@ -74,10 +74,11 @@ class CommentController extends BaseApiController
         try {
             $this->authorize('create', Comment::class);
             DB::beginTransaction();
-            $this->commentService->create($post, $request->validated());
+            $comment = $this->commentService->create($post, $request->validated());
+            $comment->load(['author']);
             DB::commit();
 
-            return $this->success(message: __('Comment created successfully'));
+            return $this->success(message: __('Comment created successfully'), data: new CommentResource($comment));
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {
@@ -134,10 +135,11 @@ class CommentController extends BaseApiController
         try {
             $this->authorize('update', [Comment::class, $post, $comment]);
             DB::beginTransaction();
-            $this->commentService->update($comment, $request->validated());
+            $updatedComment = $this->commentService->update($comment, $request->validated());
+            $updatedComment->load(['author']);
             DB::commit();
 
-            return $this->success(message: __('Comment updated successfully'));
+            return $this->success(message: __('Comment updated successfully'), data: new CommentResource($updatedComment));
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {

@@ -78,10 +78,11 @@ class UserController extends BaseApiController
             $this->authorize('create', User::class);
 
             DB::beginTransaction();
-            $this->userService->store($request->validated());
+            $user = $this->userService->store($request->validated());
+            $user->load('roles');
             DB::commit();
 
-            return $this->success(message: 'User created successfully.');
+            return $this->success(message: 'User created successfully.', data: new UserResource($user));
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {
@@ -108,10 +109,11 @@ class UserController extends BaseApiController
             $this->authorize('update', [User::class, $user]);
 
             DB::beginTransaction();
-            $this->userService->update($user, $request->validated());
+            $updatedUser = $this->userService->update($user, $request->validated());
+            $updatedUser->load('roles');
             DB::commit();
 
-            return $this->success(message: 'User updated successfully.');
+            return $this->success(message: 'User updated successfully.', data: new UserResource($updatedUser));
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {

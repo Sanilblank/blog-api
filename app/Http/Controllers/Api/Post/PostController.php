@@ -69,10 +69,11 @@ class PostController extends BaseApiController
         try {
             $this->authorize('create', Post::class);
             DB::beginTransaction();
-            $this->postService->create($request->validated());
+            $post = $this->postService->create($request->validated());
+            $post->load(['author', 'category', 'tags', 'comments.author']);
             DB::commit();
 
-            return $this->success(message: __('Post created successfully'));
+            return $this->success(message: __('Post created successfully'), data: new PostResource($post));
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {
@@ -121,10 +122,11 @@ class PostController extends BaseApiController
         try {
             $this->authorize('update', [Post::class, $post]);
             DB::beginTransaction();
-            $this->postService->update($post, $request->validated());
+            $updatedPost = $this->postService->update($post, $request->validated());
+            $updatedPost->load(['author', 'category', 'tags', 'comments.author']);
             DB::commit();
 
-            return $this->success(message: __('Post updated successfully'));
+            return $this->success(message: __('Post updated successfully'), data: new PostResource($updatedPost));
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {

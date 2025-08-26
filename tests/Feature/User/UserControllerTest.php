@@ -100,6 +100,7 @@ it('admin can create new user', function (User $user) {
          ->assertOk()
          ->assertJson(fn(AssertableJson $json) => $json->where('success', true)
                                                        ->where('message', __('User created successfully.'))
+                                                       ->has('data')
          );
 })->with([
     fn() => asAdmin(),
@@ -140,6 +141,7 @@ it('admin can update an author', function (User $admin, User $author) {
          ->assertOk()
          ->assertJson(fn(AssertableJson $json) => $json->where('success', true)
                                                        ->where('message', __('User updated successfully.'))
+                                                       ->has('data')
          );
 
     $this->assertDatabaseHas('users', [
@@ -174,6 +176,7 @@ it('author can update their own profile', function (User $author) {
          ->assertOk()
          ->assertJson(fn(AssertableJson $json) => $json->where('success', true)
                                                        ->where('message', __('User updated successfully.'))
+                                                       ->has('data')
          );
 
     $this->assertDatabaseHas('users', [

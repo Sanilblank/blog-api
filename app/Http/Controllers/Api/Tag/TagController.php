@@ -65,10 +65,10 @@ class TagController extends BaseApiController
     {
         try {
             DB::beginTransaction();
-            $this->tagService->create($request->validated());
+            $tag = $this->tagService->create($request->validated());
             DB::commit();
 
-            return $this->success(message: __('Tag created successfully'));
+            return $this->success(message: __('Tag created successfully'), data: new TagResource($tag));
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {
@@ -113,10 +113,10 @@ class TagController extends BaseApiController
     {
         try {
             DB::beginTransaction();
-            $this->tagService->update($tag, $request->validated());
+            $updatedTag = $this->tagService->update($tag, $request->validated());
             DB::commit();
 
-            return $this->success(message: __('Tag updated successfully'));
+            return $this->success(message: __('Tag updated successfully'), data: new TagResource($updatedTag));
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {

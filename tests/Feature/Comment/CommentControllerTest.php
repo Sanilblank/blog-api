@@ -24,6 +24,7 @@ it('users can create a comment', function (User $user, Post $post) {
          ->assertOk()
          ->assertJson(fn(AssertableJson $json) => $json->where('success', true)
                                                        ->where('message', __('Comment created successfully'))
+                                                       ->has('data')
          );
 
     $this->assertDatabaseHas('comments', [
@@ -82,6 +83,7 @@ it('admin can update a comment on the post', function (User $admin, Post $post, 
          ->assertOk()
          ->assertJson(fn(AssertableJson $json) => $json->where('success', true)
                                                        ->where('message', __('Comment updated successfully'))
+                                                       ->has('data')
          );
 
     $this->assertDatabaseHas('comments', [
@@ -107,6 +109,7 @@ it('comment owner can update their own comment on the post', function (User $aut
          ->assertOk()
          ->assertJson(fn(AssertableJson $json) => $json->where('success', true)
                                                        ->where('message', __('Comment updated successfully'))
+                                                       ->has('data')
          );
 
     $this->assertDatabaseHas('comments', [

@@ -26,6 +26,7 @@ it('admin can create a new tag', function (User $admin) {
          ->assertOk()
          ->assertJson(fn(AssertableJson $json) => $json->where('success', true)
                                                        ->where('message', __('Tag created successfully'))
+                                                       ->has('data')
          );
 
     $this->assertDatabaseHas('tags', [
@@ -105,6 +106,7 @@ it('admin can update a tag', function (User $admin) {
          ->assertOk()
          ->assertJson(fn(AssertableJson $json) => $json->where('success', true)
                                                        ->where('message', __('Tag updated successfully'))
+                                                       ->has('data')
          );
 
     $this->assertDatabaseHas('tags', [

@@ -1,12 +1,12 @@
 meta {
-  name: Update Tag
+  name: Delete User
   type: http
-  seq: 3
+  seq: 5
 }
 
-put {
-  url: {{url}}/api/tags/5
-  body: formUrlEncoded
+delete {
+  url: {{url}}/api/users/9
+  body: none
   auth: bearer
 }
 
@@ -16,10 +16,6 @@ headers {
 
 auth:bearer {
   token: {{token}}
-}
-
-body:form-urlencoded {
-  name: Test New New
 }
 
 settings {

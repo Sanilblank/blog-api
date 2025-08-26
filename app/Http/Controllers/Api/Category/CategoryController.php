@@ -11,7 +11,6 @@ use App\Http\Resources\CategoryResource;
 use App\Http\Resources\PaginationResource;
 use App\Models\Category;
 use App\Services\Category\CategoryService;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -69,10 +68,10 @@ class CategoryController extends BaseApiController
     {
         try {
             DB::beginTransaction();
-            $this->categoryService->create($request->validated());
+            $category = $this->categoryService->create($request->validated());
             DB::commit();
 
-            return $this->success(message: __('Category created successfully'));
+            return $this->success(message: __('Category created successfully'), data: new CategoryResource($category));
         } catch (\Throwable $e) {
             \DB::rollBack();
             logger()->error($e);
@@ -115,10 +114,10 @@ class CategoryController extends BaseApiController
     {
         try {
             DB::beginTransaction();
-            $this->categoryService->update($category, $request->validated());
+            $updatedCategory = $this->categoryService->update($category, $request->validated());
             DB::commit();
 
-            return $this->success(message: __('Category updated successfully'));
+            return $this->success(message: __('Category updated successfully'), data: new CategoryResource($updatedCategory));
         } catch (\Throwable $e) {
             DB::rollBack();
             logger()->error($e);

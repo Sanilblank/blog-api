@@ -5,13 +5,12 @@ meta {
 }
 
 get {
-  url: {{url}}/api/categories?search=n
+  url: {{url}}/api/categories
   body: none
   auth: bearer
 }
 
 params:query {
-  search: n
   ~page: 1
   ~per_page: 1
 }
