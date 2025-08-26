@@ -17,7 +17,7 @@ API documentation is auto-generated using [Scramble](https://github.com/dedoc/sc
 - **Authentication**: Laravel Sanctum
 - **RBAC**: Spatie Laravel Permission
 - **API Docs**: Scramble
-- **API Collection**: Bruno (in `/App/blog-api-folder`)
+- **API Collection**: Bruno (in `/App/blog-api-bruno`)
 - **Testing**: Pest
 
 ---
@@ -146,7 +146,7 @@ Access the api at http://localhost:80/
 ### 📝 API Documentation
 
 - The API documentation is **auto-generated** using **Scramble** and can be found at `/docs/api`.
-- The **Bruno API collection** is available in `/App/blog-api-folder` for reference and implementation.
+- The **Bruno API collection** is available in `/App/blog-api-bruno` for reference and implementation.
 
 ---
 
