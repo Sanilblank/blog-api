@@ -6,6 +6,7 @@ use App\Enums\DbTables;
 use App\Filters\CategoryFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Category
@@ -43,5 +44,15 @@ class Category extends Model
         tap(new CategoryFilter($query, $filter), function ($categoryFilter) {
             return $categoryFilter->apply();
         });
+    }
+
+    /**
+     * Get the posts that belong to the category.
+     *
+     * @return HasMany
+     */
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class, 'category_id', 'id');
     }
 }

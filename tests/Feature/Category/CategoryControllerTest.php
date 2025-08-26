@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\User;
 use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -196,6 +197,22 @@ it('admin can delete a category', function (User $admin) {
     $this->assertDatabaseMissing('categories', [
         'id' => $category->id,
     ]);
+})->with([
+    fn() => asAdmin(),
+]);
+
+it('admin cannot delete a category with posts', function (User $admin) {
+    $this->actingAs($admin, 'sanctum');
+    $category = Category::factory()->create();
+    Post::factory()->create(['category_id' => $category->id]);
+
+    $this->deleteJson(route('categories.destroy', $category->id))
+         ->assertBadRequest()
+         ->assertJson(fn(AssertableJson $json) => $json->where('success', false)
+                                                       ->where('message', __('Category cannot be deleted as it has posts.'))
+         );
+
+    $this->assertDatabaseHas('categories', ['id' => $category->id]);
 })->with([
     fn() => asAdmin(),
 ]);

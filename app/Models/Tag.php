@@ -6,6 +6,8 @@ use App\Enums\DbTables;
 use App\Filters\TagFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * Class Tag
@@ -43,5 +45,15 @@ class Tag extends Model
         tap(new TagFilter($query, $filter), function ($categoryFilter) {
             return $categoryFilter->apply();
         });
+    }
+
+    /**
+     * Get the posts that belong to the tag.
+     *
+     * @return MorphToMany
+     */
+    public function posts(): MorphToMany
+    {
+        return $this->morphedByMany(Post::class, 'taggable');
     }
 }

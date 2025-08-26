@@ -1,0 +1,39 @@
+meta {
+  name: List Posts
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{url}}/api/posts?search=new
+  body: none
+  auth: bearer
+}
+
+params:query {
+  search: new
+  ~tags: 2,3,4
+  ~per_page: 10
+  ~page: 1
+  ~category: 3
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:form-urlencoded {
+  title: Test post
+  body: this is the body
+  category_id: 3
+  tags[0]: 2
+  tags[1]: 3
+}
+
+settings {
+  encodeUrl: true
+}

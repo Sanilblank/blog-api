@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
 use Database\Seeders\RolePermissionSeeder;
@@ -196,6 +197,23 @@ it('admin can delete a tag', function (User $admin) {
     $this->assertDatabaseMissing('tags', [
         'id' => $tag->id,
     ]);
+})->with([
+    fn() => asAdmin(),
+]);
+
+it('admin cannot delete a tag with posts', function (User $admin) {
+    $this->actingAs($admin, 'sanctum');
+    $tag = Tag::factory()->create();
+    $post = Post::factory()->create();
+    $post->tags()->attach($tag->id);
+
+    $this->deleteJson(route('tags.destroy', $tag->id))
+         ->assertBadRequest()
+         ->assertJson(fn(AssertableJson $json) => $json->where('success', false)
+                                                       ->where('message', __('Tag cannot be deleted as it has posts.'))
+         );
+
+    $this->assertDatabaseHas('tags', ['id' => $tag->id]);
 })->with([
     fn() => asAdmin(),
 ]);

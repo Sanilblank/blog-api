@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Users;
+namespace App\Http\Requests\Post;
 
 use App\Enums\Roles;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * Class UserIndexRequest
+ * Class PostIndexRequest
  *
- * @package App\Http\Requests
+ * @package App\Http\Requests\Post
  */
-class UserIndexRequest extends FormRequest
+class PostIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +24,19 @@ class UserIndexRequest extends FormRequest
     /**
      * Prepare the request for validation.
      *
-     * If the request contains the 'roles' field, split it into an array of role names.
-     * This allows passing multiple role names as a single string, separated by commas,
+     * If the request contains the 'tags' field, split it into an array of tag IDs.
+     * This allows passing multiple tag IDs as a single string, separated by commas,
      * and still have the validation rules work correctly.
      */
     public function prepareForValidation(): void
     {
-        if ($this->has('roles')) {
-            $names = collect(explode(',', $this->input('roles')))
-                ->map(fn($name) => empty($name) ? '' : $name)
+        if ($this->has('tags')) {
+            $ids = collect(explode(',', $this->input('tags')))
+                ->map(fn($id) => empty($id) ? '' : $id)
                 ->all();
 
             $this->merge([
-                'roles' => $names,
+                'tags' => $ids,
             ]);
         }
     }
@@ -52,16 +52,22 @@ class UserIndexRequest extends FormRequest
             'page'     => ['nullable', 'integer', 'min:1'],
             'per_page' => ['nullable', 'integer', 'min:1'],
             'search'   => ['nullable', 'string'],
-            'roles'    => ['nullable', 'array'],
-            'roles.*'  => ['nullable', 'string', Rule::in(Roles::values())]
+            'category' => ['nullable', 'integer', 'exists:categories,id'],
+            'tags'     => ['nullable', 'array'],
+            'tags.*'   => ['nullable', 'string', 'exists:tags,id']
         ];
     }
 
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
     public function messages(): array
     {
         return [
-            'roles.*.in'     => __('validation.in', ['attribute' => 'role']),
-            'roles.*.string' => __('validation.string', ['attribute' => 'role']),
+            'tags.*.exists' => __('validation.exists', ['attribute' => 'tag']),
+            'tags.*.string' => __('validation.string', ['attribute' => 'tag']),
         ];
     }
 }

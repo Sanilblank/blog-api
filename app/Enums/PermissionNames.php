@@ -15,4 +15,11 @@ enum PermissionNames: string
     case VIEW_USER   = 'view_user';
     case DELETE_USER = 'delete_user';
     case UPDATE_USER = 'update_user';
+
+    /**
+     * Post Permissions
+     */
+    case CREATE_POST = 'create_post';
+    case DELETE_POST = 'delete_post';
+    case UPDATE_POST = 'update_post';
 }

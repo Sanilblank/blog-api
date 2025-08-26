@@ -12,6 +12,8 @@
 */
 
 use App\Enums\Roles;
+use App\Models\Category;
+use App\Models\Tag;
 use App\Models\User;
 
 pest()->extend(Tests\TestCase::class)
@@ -68,4 +70,34 @@ function asAuthor(): User
     $user->assignRole(Roles::AUTHOR);
 
     return $user;
+}
+
+/**
+ * Returns a payload of data for creating a post.
+ *
+ * @return array
+ */
+function getPostData(): array
+{
+    return [
+        'title'       => 'My First Post',
+        'body'        => 'This is the body of the post',
+        'category_id' => Category::factory()->create()->id,
+        'tags'        => Tag::factory()->count(3)->create()->pluck('id')->toArray(),
+    ];
+}
+
+/**
+ * Helper function to return update payload
+ *
+ * @return array
+ */
+function getPostUpdateData(): array
+{
+    return [
+        'title'       => 'Updated Post Title',
+        'body'        => 'Updated post body content',
+        'category_id' => Category::factory()->create()->id,
+        'tags'        => Tag::factory()->count(2)->create()->pluck('id')->toArray(),
+    ];
 }

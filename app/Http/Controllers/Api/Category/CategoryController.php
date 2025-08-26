@@ -140,6 +140,10 @@ class CategoryController extends BaseApiController
     public function destroy(Category $category): JsonResponse
     {
         try {
+            if (count($category->posts)) {
+                return $this->failure(message: __('Category cannot be deleted as it has posts.'), code: 400);
+            }
+
             $this->categoryService->delete($category);
 
             return $this->success(message: __('Category deleted successfully'));
