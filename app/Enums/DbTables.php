@@ -12,4 +12,8 @@ enum DbTables: string
     case CATEGORIES = 'categories';
 
     case TAGS = 'tags';
+
+    case POSTS = 'posts';
+
+    case TAGGABLES = 'taggables';
 }

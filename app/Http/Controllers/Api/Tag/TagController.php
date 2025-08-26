@@ -135,6 +135,10 @@ class TagController extends BaseApiController
     public function destroy(Tag $tag): JsonResponse
     {
         try {
+            if (count($tag->posts)) {
+                return $this->failure(message: __('Tag cannot be deleted as it has posts.'), code: 400);
+            }
+
             $this->tagService->delete($tag);
 
             return $this->success(message: __('Tag deleted successfully'));

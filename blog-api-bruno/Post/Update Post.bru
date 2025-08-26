@@ -1,0 +1,31 @@
+meta {
+  name: Update Post
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{url}}/api/posts/1
+  body: formUrlEncoded
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:form-urlencoded {
+  title: Test post new
+  body: this is the body
+  category_id: 3
+  tags[0]: 2
+  tags[1]: 4
+}
+
+settings {
+  encodeUrl: true
+}

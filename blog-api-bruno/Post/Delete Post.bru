@@ -1,0 +1,23 @@
+meta {
+  name: Delete Post
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{url}}/api/posts/4
+  body: none
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

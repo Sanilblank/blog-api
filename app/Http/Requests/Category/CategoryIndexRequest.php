@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * Class UserIndexRequest.php
+ * Class CategoryIndexRequest
  *
  * @package App\Http\Requests\Category
  */
