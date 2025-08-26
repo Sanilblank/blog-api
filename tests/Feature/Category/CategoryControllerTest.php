@@ -26,6 +26,7 @@ it('admin can create a new category', function (User $admin) {
          ->assertOk()
          ->assertJson(fn(AssertableJson $json) => $json->where('success', true)
                                                        ->where('message', __('Category created successfully'))
+                                                       ->has('data')
          );
 
     $this->assertDatabaseHas('categories', [
@@ -105,6 +106,7 @@ it('admin can update a category', function (User $admin) {
          ->assertOk()
          ->assertJson(fn(AssertableJson $json) => $json->where('success', true)
                                                        ->where('message', __('Category updated successfully'))
+                                                       ->has('data')
          );
 
     $this->assertDatabaseHas('categories', [

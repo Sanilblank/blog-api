@@ -23,6 +23,7 @@ it('admin can create a post', function (User $user) {
          ->assertOk()
          ->assertJson(fn(AssertableJson $json) => $json->where('success', true)
                                                        ->where('message', __('Post created successfully'))
+                                                       ->has('data')
          );
 
     $this->assertDatabaseHas('posts', [
@@ -61,6 +62,7 @@ it('admin can update any post', function (User $admin, Post $post) {
          ->assertOk()
          ->assertJson(fn($json) => $json->where('success', true)
                                         ->where('message', __('Post updated successfully'))
+                                        ->has('data')
          );
 
     $this->assertDatabaseHas('posts', [
@@ -86,6 +88,7 @@ it('author can update own post', function (User $author) {
          ->assertOk()
          ->assertJson(fn($json) => $json->where('success', true)
                                         ->where('message', __('Post updated successfully'))
+                                        ->has('data')
          );
 
     $post->refresh();

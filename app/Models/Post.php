@@ -45,6 +45,10 @@ class Post extends Model
         static::deleting(function (Post $post) {
             $post->tags()->detach();
         });
+
+        static::deleting(function (Post $post) {
+            $post->comments()->delete();
+        });
     }
 
     /**
