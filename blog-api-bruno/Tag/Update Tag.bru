@@ -1,0 +1,27 @@
+meta {
+  name: Update Tag
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{url}}/api/tags/1
+  body: formUrlEncoded
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:form-urlencoded {
+  name: Test
+}
+
+settings {
+  encodeUrl: true
+}

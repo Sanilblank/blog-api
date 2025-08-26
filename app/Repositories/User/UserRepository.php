@@ -12,6 +12,11 @@ use App\Repositories\BaseRepository;
  */
 class UserRepository extends BaseRepository
 {
+    /**
+     * Constructor
+     *
+     * @param User $user Eloquent model for the repository
+     */
     public function __construct(User $user)
     {
         parent::__construct($user);
