@@ -40,7 +40,7 @@ composer install
 ```bash
 cp .env.example .env
 ```
-Update .env with your local PostgreSQL credentials:
+* Update .env with your local PostgreSQL credentials:
 ```bash
 DB_CONNECTION=pgsql
 DB_HOST=localhost
@@ -53,7 +53,7 @@ DB_PASSWORD=postgres
 ```bash
 cp .env.example .env
 ```
-Update .env for Sail (Docker) setup:
+* Update .env for Sail (Docker) setup:
 ```bash
 DB_CONNECTION=pgsql
 DB_HOST=pgsql
@@ -62,49 +62,48 @@ DB_DATABASE=laravel_blog
 DB_USERNAME=sail
 DB_PASSWORD=password
 ```
-_Sail sets up a pgsql container by default with username sail and password password._
+_Sail sets up a pgsql container by default with username **sail** and password **password**._
 
 ### 4. Run Migrations and Seeders
 **Local**
+
+* Clear the caches
 ```bash
 php artisan optimize:clear
 ```
-_Clear the caches_
 
+* Generate an application key
 ```bash
 php artisan key:generate
 ```
-_Generate an application key_
 
+* Run the migrations and seeders
 ```bash
 php artisan migrate:fresh --seed
 ```
-_Run the migrations and seeders_
-
-An admin user with email **admin@admin.com** and password **password123** are seeded.
+_An admin user with email **admin@admin.com** and password **password123** are seeded._
 
 **Sail**
+
+* Build and start Container in detached mode
 ```bash
 ./vendor/bin/sail up --build
 ```
-_Build and start Container in detached mode_
-
+* Clear the caches
 ```bash
 ./vendor/bin/sail artisan optimize:clear
 ```
-_Clear the caches_
 
+* Generate an application key
 ```bash
 ./vendor/bin/sail artisan key:generate
 ```
-_Generate an application key_
-
+* Run the migrations and seeders
 ```bash
 ./vendor/bin/sail artisan migrate:fresh --seed
 ```
-_Run the migrations and seeders_
 
-An admin user with email **admin@admin.com** and password **password123** are seeded.
+_An admin user with email **admin@admin.com** and password **password123** are seeded._
 
 ### 5. Start the Development Server
 **Local**
@@ -114,7 +113,7 @@ php artisan serve
 Access the api at http://127.0.0.1:8000/
 
 **Sail**
-* Note: Only do this if it has not been started yet, it should have already started from previous steps
+* **Note**: Only do this if it has not been started yet, it should have already started from previous steps
 ```bash
 ./vendor/bin/sail up
 ```
