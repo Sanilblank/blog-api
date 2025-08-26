@@ -7,6 +7,7 @@ use App\Filters\PostFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
@@ -89,5 +90,15 @@ class Post extends Model
         tap(new PostFilter($query, $filter), function ($postFilter) {
             return $postFilter->apply();
         });
+    }
+
+    /**
+     * A post can have many comments.
+     *
+     * @return MorphMany
+     */
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 }

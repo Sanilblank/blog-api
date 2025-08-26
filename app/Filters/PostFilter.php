@@ -62,4 +62,12 @@ class PostFilter extends BaseFilter
             $query->whereIn('tags.id', $tags);
         });
     }
+
+    /**
+     * Filters by author.
+     */
+    public function author(int $author_id): Builder
+    {
+        return $this->builder->where('user_id', $author_id);
+    }
 }

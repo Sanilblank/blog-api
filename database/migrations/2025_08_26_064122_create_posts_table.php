@@ -14,8 +14,8 @@ return new class extends Migration
     {
         Schema::create(DbTables::POSTS->value, function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
+            $table->foreignId('user_id')->constrained(DbTables::USERS->value)->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained(DbTables::CATEGORIES->value)->restrictOnDelete();
             $table->string('title');
             $table->longText('body');
             $table->timestamps();

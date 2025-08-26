@@ -5,7 +5,12 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PostResource extends JsonResource
+/**
+ * Class CommentResource
+ *
+ * @package App\Http\Resources
+ */
+class CommentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +21,8 @@ class PostResource extends JsonResource
     {
         return [
             'id'         => $this->id,
-            'title'      => $this->title,
             'body'       => $this->body,
-            'category'   => new CategoryResource($this->whenLoaded('category')),
-            'tags'       => TagResource::collection($this->whenLoaded('tags')),
             'author'     => new UserResource($this->whenLoaded('author')),
-            'comments'   => CommentResource::collection($this->whenLoaded('comments')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -1,0 +1,27 @@
+meta {
+  name: Store Comment
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{url}}/api/posts/1/comments
+  body: formUrlEncoded
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:form-urlencoded {
+  body: This is the body of the comment
+}
+
+settings {
+  encodeUrl: true
+}

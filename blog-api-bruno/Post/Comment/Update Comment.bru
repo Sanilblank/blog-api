@@ -1,0 +1,27 @@
+meta {
+  name: Update Comment
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{url}}/api/posts/1/comments/1
+  body: formUrlEncoded
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:form-urlencoded {
+  body: This is the body
+}
+
+settings {
+  encodeUrl: true
+}

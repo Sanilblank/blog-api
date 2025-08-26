@@ -13,6 +13,7 @@ use App\Models\Tag;
 use App\Services\Tag\TagService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class TagController
@@ -63,13 +64,15 @@ class TagController extends BaseApiController
     public function store(TagCreateRequest $request): JsonResponse
     {
         try {
+            DB::beginTransaction();
             $this->tagService->create($request->validated());
+            DB::commit();
 
             return $this->success(message: __('Tag created successfully'));
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {
-            \DB::rollBack();
+            DB::rollBack();
             logger()->error($e);
 
             return $this->failure(__($e->getMessage()));
@@ -90,7 +93,6 @@ class TagController extends BaseApiController
         try {
             return $this->success(message: __('Tag details.'), data: new TagResource($tag));
         } catch (\Throwable $e) {
-            \DB::rollBack();
             logger()->error($e);
 
             return $this->failure(__($e->getMessage()));
@@ -110,13 +112,15 @@ class TagController extends BaseApiController
     public function update(TagUpdateRequest $request, Tag $tag): JsonResponse
     {
         try {
+            DB::beginTransaction();
             $this->tagService->update($tag, $request->validated());
+            DB::commit();
 
             return $this->success(message: __('Tag updated successfully'));
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {
-            \DB::rollBack();
+            DB::rollBack();
             logger()->error($e);
 
             return $this->failure(__($e->getMessage()));
@@ -135,17 +139,20 @@ class TagController extends BaseApiController
     public function destroy(Tag $tag): JsonResponse
     {
         try {
+            DB::beginTransaction();
+
             if (count($tag->posts)) {
                 return $this->failure(message: __('Tag cannot be deleted as it has posts.'), code: 400);
             }
 
             $this->tagService->delete($tag);
+            DB::commit();
 
             return $this->success(message: __('Tag deleted successfully'));
         } catch (AuthorizationException $e) {
             return $this->failure(message: $e->getMessage(), code: 403);
         } catch (\Throwable $e) {
-            \DB::rollBack();
+            DB::rollBack();
             logger()->error($e);
 
             return $this->failure(__($e->getMessage()));

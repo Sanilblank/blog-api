@@ -1,18 +1,18 @@
 meta {
-  name: List Users
+  name: List Comments
   type: http
-  seq: 1
+  seq: 5
 }
 
 get {
-  url: {{url}}/api/users?search=s
+  url: {{url}}/api/posts/1/comments?search=t
   body: none
   auth: bearer
 }
 
 params:query {
-  search: s
-  ~roles: author
+  search: t
+  ~author: 1
   ~page: 1
   ~per_page: 1
 }

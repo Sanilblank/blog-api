@@ -12,6 +12,11 @@ use Illuminate\Support\Str;
 class CategoryFactory extends Factory
 {
     /**
+     * @var string
+     */
+    protected $model = Category::class;
+
+    /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
