@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class UserFilter
+ *
+ * @package App\Filters
  */
 class UserFilter extends BaseFilter
 {

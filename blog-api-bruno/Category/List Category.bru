@@ -1,18 +1,17 @@
 meta {
-  name: List Users
+  name: List Category
   type: http
-  seq: 1
+  seq: 5
 }
 
 get {
-  url: {{url}}/api/users?search=s&roles=author
+  url: {{url}}/api/categories?search=n
   body: none
   auth: bearer
 }
 
 params:query {
-  search: s
-  roles: author
+  search: n
   ~page: 1
   ~per_page: 1
 }

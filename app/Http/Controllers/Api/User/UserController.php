@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\User;
 
 use App\Enums\General;
-use App\Http\Requests\UserIndexRequest;
+use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Requests\Users\UserCreateRequest;
+use App\Http\Requests\Users\UserIndexRequest;
 use App\Http\Requests\Users\UserUpdateRequest;
 use App\Http\Resources\PaginationResource;
 use App\Http\Resources\UserResource;
