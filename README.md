@@ -37,6 +37,7 @@ composer install
 
 ### 3. Create Environment File and Configure Database
 **Option A**: Local PHP + PostgreSQL
+* Copy .env.example to .env
 ```bash
 cp .env.example .env
 ```
@@ -50,6 +51,7 @@ DB_USERNAME=postgres
 DB_PASSWORD=postgres
 ```
 **Option B**: Using Laravel Sail (Docker)
+* Copy .env.example to .env
 ```bash
 cp .env.example .env
 ```
