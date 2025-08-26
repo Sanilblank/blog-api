@@ -1,61 +1,134 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Blog API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This project is a **RESTful Blog API** built with **Laravel 12** and **PHP 8.2**, using **PostgreSQL (12 or 17)** as the database.
 
-## About Laravel
+It implements users, posts, categories, tags, comments, authentication, role-based access control (RBAC), search, and filtering.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+API documentation is auto-generated using [Scramble](https://github.com/dedoc/scramble), and an API collection (Bruno) is provided in the repo.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🚀 Tech Stack
 
-## Learning Laravel
+- **PHP**: 8.2
+- **Laravel**: 12.x
+- **Database**: PostgreSQL 12+ (tested with 12 and 17)
+- **Composer**: 2.7.2
+- **Authentication**: Laravel Sanctum
+- **RBAC**: Spatie Laravel Permission
+- **API Docs**: Scramble
+- **API Collection**: Bruno (in `/App/blog-api-folder`)
+- **Testing**: Pest
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## ⚙️ Setup Instructions
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Sanilblank/blog-api.git
+cd your-repo
+```
 
-## Laravel Sponsors
+### 2. Install Dependencies
+```bash
+composer install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. Create Environment File and Configure Database
+**Option A**: Local PHP + PostgreSQL
+```bash
+cp .env.example .env
+```
+Update .env with your local PostgreSQL credentials:
+```bash
+DB_CONNECTION=pgsql
+DB_HOST=localhost
+DB_PORT=5432
+DB_DATABASE=blog_api
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+```
+**Option B**: Using Laravel Sail (Docker)
+```bash
+cp .env.example .env
+```
+Update .env for Sail (Docker) setup:
+```bash
+DB_CONNECTION=pgsql
+DB_HOST=pgsql
+DB_PORT=5432
+DB_DATABASE=laravel_blog
+DB_USERNAME=sail
+DB_PASSWORD=password
+```
+_Sail sets up a pgsql container by default with username sail and password password._
 
-### Premium Partners
+### 4. Run Migrations and Seeders
+**Local**
+```bash
+php artisan migrate:fresh --seed
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+**Sail**
+```bash
+./vendor/bin/sail up -d
+```
+_Start Container in detached mode_
+```bash
+./vendor/bin/sail artisan migrate:fresh --seed
+```
+_Run the migrations and seeders_
 
-## Contributing
+An admin user with email **admin@admin.com** and password **password123** are seeded.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 5. Start the Development Server
+**Local**
+```bash
+php artisan serve
+```
+Access the api at http://127.0.0.1:8000/
 
-## Code of Conduct
+**Sail**
+```bash
+./vendor/bin/sail up
+```
+Access the api at http://localhost:80/
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 👤 Authentication
+* Uses Laravel Sanctum for token-based authentication.
+* Register/Login to receive an API token.
+* Use the token for authenticated requests in headers: Authorization: Bearer <token>.
 
-## Security Vulnerabilities
+### 👮 Roles & Permissions
+- **Admin**
+    - Full access to posts, categories, tags, and comments.
+    - Can manage all authors.
+    - Can create new admins.
+    - Can update or delete **only their own admin account**, not other admins.
+- **Author**
+    - Can manage their own posts and comments.
+    - Can update or delete **only their own account**.
+- Role-based access control (RBAC) is implemented using **Spatie Laravel Permission**.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+### 📝 API Documentation
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- The API documentation is **auto-generated** using **Scramble** and can be found at `/docs/api`.
+- The **Bruno API collection** is available in `/App/blog-api-folder` for reference and implementation.
+
+### 🧪 Running Tests
+
+1. **Create a testing database named 'testing'**
+
+2. **Run all tests**:
+
+- **Local**:  
+```bash
+php artisan test
+```
+
+- **Sail**: 
+```bash
+  ./vendor/bin/sail artisan test
+```
