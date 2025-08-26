@@ -4,7 +4,7 @@ This project is a **RESTful Blog API** built with **Laravel 12** and **PHP 8.2**
 
 It implements users, posts, categories, tags, comments, authentication, role-based access control (RBAC), search, and filtering.
 
-API documentation is auto-generated using [Scramble](https://github.com/dedoc/scramble), and an API collection (Bruno) is provided in the repo.
+API documentation is auto-generated using [Scramble](https://github.com/dedoc/scramble), and an API collection (Bruno) is provided in the repo with two environments (Local and Local Sail).
 
 ---
 
@@ -67,14 +67,38 @@ _Sail sets up a pgsql container by default with username sail and password passw
 ### 4. Run Migrations and Seeders
 **Local**
 ```bash
+php artisan optimize:clear
+```
+_Clear the caches_
+
+```bash
+php artisan key:generate
+```
+_Generate an application key_
+
+```bash
 php artisan migrate:fresh --seed
 ```
+_Run the migrations and seeders_
+
+An admin user with email **admin@admin.com** and password **password123** are seeded.
 
 **Sail**
 ```bash
-./vendor/bin/sail up -d
+./vendor/bin/sail up --build
 ```
-_Start Container in detached mode_
+_Build and start Container in detached mode_
+
+```bash
+./vendor/bin/sail artisan optimize:clear
+```
+_Clear the caches_
+
+```bash
+./vendor/bin/sail artisan key:generate
+```
+_Generate an application key_
+
 ```bash
 ./vendor/bin/sail artisan migrate:fresh --seed
 ```
@@ -90,6 +114,7 @@ php artisan serve
 Access the api at http://127.0.0.1:8000/
 
 **Sail**
+* Note: Only do this if it has not been started yet, it should have already started from previous steps
 ```bash
 ./vendor/bin/sail up
 ```
